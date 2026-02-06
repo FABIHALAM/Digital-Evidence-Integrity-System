@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Verify Evidence</title>
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="/static/animations.css">
+</head>
+<body>
+<div class="glass-container fade-in">
+<h1>🧪 Verify Evidence Integrity</h1>
+<a href="/dashboard" class="btn secondary" style="margin-bottom: 20px; display: block; text-align: center;">Back to Dashboard</a>
+
+<form method="POST" enctype="multipart/form-data">
+    <input class="input-field" type="file" name="file" required>
+    <button class="btn-primary">Verify</button>
+</form>
+
+{% if result %}
+<div class="glass-card slide-up">
+    <p><b>File:</b> {{ result.file }}</p>
+    <p><b>Status:</b> {{ result.status }}</p>
+    <p><b>Hash:</b> {{ result.hash }}</p>
+    <p><b>Checked At:</b> {{ result.time }}</p>
+</div>
+{% endif %}
+</div>
+</body>
+</html>

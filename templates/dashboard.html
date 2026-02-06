@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DEIS X – Digital Evidence Integrity</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/animations.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script defer src="/static/charts.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h2>🛡 DEIS X</h2>
+            </div>
+            <div class="nav-controls">
+                <div class="nav-links">
+                    <a href="/dashboard" class="nav-link active">Dashboard</a>
+                    {% if role != 'viewer' %}
+                    <a href="/verify" class="nav-link">Verify</a>
+                    {% endif %}
+                    {% if role == 'admin' %}
+                    <a href="/admin" class="nav-link">Admin</a>
+                    {% endif %}
+                </div>
+                <div class="user-controls">
+                    <span class="user-role">Role: <strong>{{ role|title }}</strong></span>
+                    <button id="theme-toggle" class="theme-btn" title="Toggle Dark Mode">
+                        <span class="theme-icon">🌙</span>
+                        <span class="theme-text">Dark Mode</span>
+                    </button>
+                    <a href="/logout" class="logout-btn">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+<div class="main-container fade-in">
+
+    <!-- ACTION BAR -->
+    {% if role != 'viewer' %}
+    <section class="action-bar">
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <button class="btn primary">Upload Evidence</button>
+        </form>
+
+        <form action="/verify" method="GET">
+            <button class="btn secondary">Verify Integrity</button>
+        </form>
+        {% if role == 'admin' %}
+        <a href="/admin" class="btn secondary">Admin Dashboard</a>
+        {% endif %}
+    </section>
+    {% endif %}
+
+    <!-- HASH CHAIN -->
+    <section class="card">
+        <h2>⛓ Evidence Hash Chain</h2>
+        <div class="chain-grid">
+            {% for block in chain %}
+            <div class="chain-item">
+                <span>#{{ loop.index }}</span>
+                <p>{{ block.file }}</p>
+                <small>{{ block.hash[:22] }}…</small>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- LAST CHECKED -->
+    {% if cases %}
+    {% set case = cases[-1] %}
+    <section class="card highlight {{ case.status.lower() }}">
+        <h2>📝 Last Checked Evidence</h2>
+        <p><b>Case ID:</b> {{ case.case_id }}</p>
+        <p><b>File:</b> {{ case.file }}</p>
+        <p><b>Status:</b> {{ case.status }}</p>
+        <p><b>Hash:</b> {{ case.hash }}</p>
+        <p><b>Checked:</b> {{ case.time }}</p>
+        <p><b>Metadata:</b> Size {{ case.metadata.size }} bytes</p>
+        <img src="{{ case.qr }}" width="120">
+    </section>
+    {% endif %}
+
+    <!-- ANALYTICS -->
+   <section class="card card-anim">
+    <h2>📊 Evidence Analytics</h2>
+
+    <canvas id="evidenceChart"
+        data-stats='{
+            "VALID": {{ cases | selectattr("status","equalto","VALID") | list | length }},
+            "TAMPERED": {{ cases | selectattr("status","equalto","TAMPERED") | list | length }},
+            "MINOR_CHANGE": {{ cases | selectattr("status","equalto","MINOR_CHANGE") | list | length }},
+            "DUPLICATE": {{ cases | selectattr("status","equalto","DUPLICATE") | list | length }}
+        }'>
+    </canvas>
+
+    <p style="opacity:0.6;margin-top:10px;font-size:0.9em">
+        Overview of evidence integrity status across all cases
+    </p>
+</section>
+
+    <!-- CASES TABLE -->
+    <section class="card card-anim">
+        <h2>📁 All Cases</h2>
+        <table>
+            <tr>
+                <th>Case ID</th>
+                <th>File</th>
+                <th>Status</th>
+                <th>View</th>
+            </tr>
+            {% for c in cases %}
+            <tr>
+                <td>{{ c.case_id }}</td>
+                <td>{{ c.file }}</td>
+                <td>{{ c.status }}</td>
+                <td>
+                    <a href="/case/{{ c.case_id }}">Open</a> |
+                    <a href="/export/{{ c.case_id }}">PDF</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </section>
+
+</div>
+
+<script>
+    // Dark Mode Toggle Functionality
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.querySelector('.theme-icon');
+    const themeText = document.querySelector('.theme-text');
+
+    // Check for saved theme preference or default to dark mode
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+
+    // Update button appearance based on current theme
+    function updateThemeButton() {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        themeIcon.textContent = isDark ? '🌙' : '☀️';
+        themeText.textContent = isDark ? 'Dark Mode' : 'Light Mode';
+    }
+
+    // Initialize button state
+    updateThemeButton();
+
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+
+        updateThemeButton();
+    });
+
+    // Add smooth transitions for theme changes
+    document.documentElement.style.transition = 'background 0.3s ease, color 0.3s ease';
+</script>
+
+</body>
+</html>

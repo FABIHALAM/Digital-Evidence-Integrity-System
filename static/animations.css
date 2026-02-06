@@ -1,0 +1,114 @@
+/* Fade in */
+.fade-in {
+    opacity: 0;
+    animation: fadeInAnim 1s forwards;
+}
+@keyframes fadeInAnim {
+    to { opacity: 1; }
+}
+
+/* Slide up */
+.slide-up {
+    transform: translateY(20px);
+    opacity: 0;
+    animation: slideUpAnim 0.8s forwards;
+}
+@keyframes slideUpAnim {
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Flow in from left */
+.flow-in {
+    opacity: 0;
+    transform: translateX(-30px);
+    animation: flowInAnim 1s ease forwards;
+}
+@keyframes flowInAnim {
+    0% { opacity:0; transform: translateX(-30px); }
+    100% { opacity:1; transform: translateX(0); }
+}
+
+/* Hover glow effect */
+.hover-glow:hover {
+    box-shadow: 0 0 25px #00fff7, 0 0 50px #00d4ff;
+    transform: scale(1.05);
+    transition: 0.3s;
+}
+
+/* Button pulse animation */
+.btn-pulse {
+    animation: pulseAnim 2s infinite;
+}
+@keyframes pulseAnim {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Button bounce on click */
+.btn-bounce:active {
+    animation: bounceAnim 0.2s;
+}
+@keyframes bounceAnim {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+
+/* Button slide in from bottom */
+.btn-slide-in {
+    transform: translateY(50px);
+    opacity: 0;
+    animation: slideInBtn 0.6s ease forwards;
+}
+@keyframes slideInBtn {
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Button rotate on hover */
+.btn-rotate:hover {
+    animation: rotateAnim 0.5s ease;
+}
+@keyframes rotateAnim {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(5deg); }
+    50% { transform: rotate(-5deg); }
+    75% { transform: rotate(3deg); }
+    100% { transform: rotate(0deg); }
+}
+
+/* Button glow ripple effect */
+.btn-ripple {
+    position: relative;
+    overflow: hidden;
+}
+.btn-ripple::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+.btn-ripple:hover::after {
+    width: 300px;
+    height: 300px;
+}
+/* Subtle professional animations only */
+
+.card,
+.chain-item {
+    will-change: transform;
+}
+
+.card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Public File Verification</title>
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="/static/animations.css">
+</head>
+<body>
+<div class="glass-container fade-in">
+<h1>🔍 Public File Integrity Check</h1>
+<p style="text-align: center; opacity: 0.8; margin-bottom: 20px;">Verify the integrity of any file against our evidence database</p>
+
+<form method="POST" enctype="multipart/form-data">
+    <input class="input-field" type="file" name="file" required>
+    <button class="btn-primary">Check Integrity</button>
+</form>
+
+{% if result %}
+<div class="glass-card slide-up">
+    <p><b>File:</b> {{ result.file }}</p>
+    <p><b>Status:</b> {{ result.status }}</p>
+    <p><b>Hash:</b> {{ result.hash }}</p>
+    <p><b>Checked At:</b> {{ result.time }}</p>
+</div>
+{% endif %}
+
+<div style="text-align: center; margin-top: 30px;">
+    <a href="/" class="btn secondary">Back to Login</a>
+</div>
+</div>
+</body>
+</html>

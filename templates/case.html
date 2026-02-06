@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Case Details</title>
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="/static/animations.css">
+</head>
+<body>
+
+<div class="glass-container fade-in">
+<h1>📁 Case Details</h1>
+
+<div class="glass-card">
+<p><b>Case ID:</b> {{ case.case_id }}</p>
+<p><b>File:</b> {{ case.file }}</p>
+<p><b>Status:</b> {{ case.status }}</p>
+<p><b>Hash:</b> {{ case.hash }}</p>
+<p><b>Last Checked:</b> {{ case.time }}</p>
+<p><b>Metadata:</b></p>
+<ul>
+<li>Size: {{ case.metadata.size }}</li>
+<li>Created: {{ case.metadata.created }}</li>
+<li>Modified: {{ case.metadata.modified }}</li>
+</ul>
+<img src="{{ case.qr }}" width="140">
+</div>
+
+<a href="/" class="btn-primary">⬅ Back to Dashboard</a>
+</div>
+
+</body>
+</html>

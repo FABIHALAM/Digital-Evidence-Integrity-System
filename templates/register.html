@@ -1,0 +1,28 @@
+yp.py.pp<!DOCTYPE html>
+<html>
+<head>
+<title>DEIS X | Register</title>
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="/static/animations.css">
+</head>
+<body>
+<div class="glass-container fade-in" style="max-width:420px">
+    <h1>📝 Register New Account</h1>
+    {% if error %}
+    <div style="color: #ff6b6b; background: rgba(255,107,107,0.1); padding: 10px; border-radius: 8px; margin-bottom: 20px; border: 1px solid rgba(255,107,107,0.3);">
+        {{ error }}
+    </div>
+    {% endif %}
+    <form method="POST">
+        <input class="input-field" name="username" placeholder="Username" required><br><br>
+        <input class="input-field" type="password" name="password" placeholder="Password" required><br><br>
+        <input class="input-field" type="password" name="confirm_password" placeholder="Confirm Password" required><br><br>
+        <select class="input-field" name="role">
+            <option value="viewer">Viewer</option>
+        </select><br><br>
+        <button class="btn-primary">Sign Up</button>
+    </form>
+    <p style="text-align: center; margin-top: 20px;"><a href="/">Already have an account? Login</a></p>
+</div>
+</body>
+</html>

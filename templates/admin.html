@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DEIS X – Admin Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/animations.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h2>🛡 DEIS X</h2>
+            </div>
+            <div class="nav-controls">
+                <button id="theme-toggle" class="theme-btn" title="Toggle Dark Mode">
+                    <span class="theme-icon">🌙</span>
+                    <span class="theme-text">Dark Mode</span>
+                </button>
+                <div class="user-info">
+                    <span>Welcome, Admin</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container fade-in">
+        <header class="header">
+            <h1>🛡 DEIS X – Admin Dashboard</h1>
+            <p>Manage Evidence Integrity System</p>
+        </header>
+
+        <section class="card card-1">
+            <h2>⛓ Full Hash Chain</h2>
+            <div class="chain-grid">
+                {% for block in chain %}
+                <div class="chain-item">
+                    <span>#{{ loop.index }}</span>
+                    <p>{{ block.file }}</p>
+                    <small>{{ block.hash[:22] }}…</small>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="card card-2">
+            <h2>📁 All Cases</h2>
+            <table>
+                <tr>
+                    <th>Case ID</th>
+                    <th>File</th>
+                    <th>Status</th>
+                    <th>Hash</th>
+                    <th>Time</th>
+                    <th>Actions</th>
+                </tr>
+                {% for c in cases %}
+                <tr>
+                    <td>{{ c.case_id }}</td>
+                    <td>{{ c.file }}</td>
+                    <td>{{ c.status }}</td>
+                    <td>{{ c.hash[:22] }}…</td>
+                    <td>{{ c.time }}</td>
+                    <td>
+                        <a href="/case/{{ c.case_id }}">View</a> |
+                        <a href="/export/{{ c.case_id }}">Export PDF</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </section>
+
+        <section class="card card-3">
+            <h2>👥 Registered Users</h2>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Location</th>
+                    <th>Join Time</th>
+                    <th>Actions</th>
+                </tr>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.role|title }}</td>
+                    <td>{{ user.location }}</td>
+                    <td>{{ user.join_time.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>
+                        {% if user.username != 'admin' %}
+                        <form method="POST" style="display:inline;">
+                            <input type="hidden" name="action" value="remove_user">
+                            <input type="hidden" name="user_id" value="{{ user.id }}">
+                            <button type="submit" class="btn-primary" style="background: #ff4757; padding: 5px 10px; font-size: 12px;">Remove</button>
+                        </form>
+                        {% else %}
+                        <span style="color: #666;">Protected</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </section>
+
+        <section class="card card-4">
+            <h2>➕ Add New User</h2>
+            {% if error %}
+            <p style="color: #ff4757;">{{ error }}</p>
+            {% endif %}
+            {% if success %}
+            <p style="color: #27d7c4;">{{ success }}</p>
+            {% endif %}
+            <form method="POST" style="max-width: 400px;">
+                <input type="hidden" name="action" value="add_user">
+                <input class="input-field" type="text" name="username" placeholder="Username" required>
+                <input class="input-field" type="password" name="password" placeholder="Password" required>
+                <select class="input-field" name="role" required>
+                    <option value="viewer">Viewer</option>
+                    <option value="investigator">Investigator</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <button class="btn-primary">Add User</button>
+            </form>
+        </section>
+
+        <section class="card card-5">
+            <h2>🔧 System Status</h2>
+            <p>Total Cases: {{ cases | length }}</p>
+            <p>Chain Length: {{ chain | length }}</p>
+            <p>Total Users: {{ users | length }}</p>
+            <p>Server Status: Running</p>
+        </section>
+    </div>
+
+    <script>
+        // Dark Mode Toggle Functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.querySelector('.theme-icon');
+        const themeText = document.querySelector('.theme-text');
+
+        // Check for saved theme preference or default to dark mode
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+
+        // Update button appearance based on current theme
+        function updateThemeButton() {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            themeIcon.textContent = isDark ? '🌙' : '☀️';
+            themeText.textContent = isDark ? 'Dark Mode' : 'Light Mode';
+        }
+
+        // Initialize button state
+        updateThemeButton();
+
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+
+            updateThemeButton();
+        });
+
+        // Add smooth transitions for theme changes
+        document.documentElement.style.transition = 'background 0.3s ease, color 0.3s ease';
+    </script>
+</body>
+</html>
