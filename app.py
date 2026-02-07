@@ -429,5 +429,10 @@ def logout():
     session.clear()
     return redirect("/")
 
+# Vercel deployment handler
+def handler(event, context):
+    from serverless_wsgi import handle_request
+    return handle_request(app, event, context)
+
 if __name__=="__main__":
     app.run(debug=True)
