@@ -1,4 +1,14 @@
 Flask
 Flask-SQLAlchemy
+qrcode
+Pillow
+reportlab
 requests
+Flask-Talisman
+Flask-Limiter
+Flask-WTF
+WTForms
+Flask-Mail
+pyotp
+bcrypt
 serverless-wsgi
