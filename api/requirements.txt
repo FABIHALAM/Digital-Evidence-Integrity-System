@@ -9,4 +9,3 @@ flask-mail
 pyotp
 exifread
 Pillow
-pytesseract
