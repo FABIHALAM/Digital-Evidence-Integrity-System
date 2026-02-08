@@ -1,0 +1,12 @@
+Flask
+Flask-SQLAlchemy
+qrcode
+reportlab
+requests
+serverless-wsgi
+flask-limiter
+flask-mail
+pyotp
+exifread
+Pillow
+pytesseract
