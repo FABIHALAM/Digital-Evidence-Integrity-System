@@ -1,70 +1,17 @@
+
+
 {
   "version": 2,
   "builds": [
     {
       "src": "app.py",
-      "use": "@vercel/python",
-      "config": {
-        "maxLambdaSize": "50mb"
-      }
+      "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/app.py"
+      "dest": "app.py"
     }
-  ],
-  "env": {
-    "SECRET_KEY": "@secret_key",
-    "DATABASE_URL": "@database_url"
-  }
+  ]
 }
->>>>>>> dbd87be723f8d5bc6858b5f98bf63b192a55bc53
-=======
-{
-  "version": 2,
-  "builds": [
-    {
-      "src": "app.py",
-      "use": "@vercel/python",
-      "config": {
-        "maxLambdaSize": "50mb"
-      }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/app.py"
-    }
-  ],
-  "env": {
-    "SECRET_KEY": "@secret_key",
-    "DATABASE_URL": "@database_url"
-  }
-}
-=======
-{
-  "version": 2,
-  "builds": [
-    {
-      "src": "app.py",
-      "use": "@vercel/python",
-      "config": {
-        "maxLambdaSize": "50mb"
-      }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/app.py"
-    }
-  ],
-  "env": {
-    "SECRET_KEY": "@secret_key",
-    "DATABASE_URL": "@database_url"
-  }
-}
->>>>>>> dbd87be723f8d5bc6858b5f98bf63b192a55bc53
