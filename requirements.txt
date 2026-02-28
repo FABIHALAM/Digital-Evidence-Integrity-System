@@ -1,11 +1,9 @@
 Flask
 Flask-SQLAlchemy
 qrcode
-watchdog
 Pillow
 reportlab
 requests
-pyinstaller
 Flask-Talisman
 Flask-Limiter
 Flask-WTF
@@ -19,6 +17,6 @@ scikit-learn
 numpy
 joblib
 exifread
-pytesseract
 cryptography
-PyQt5
+serverless-wsgi
+
